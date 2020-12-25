@@ -1,6 +1,25 @@
 const { Client } = require('discord.js');
+const express = require('express');
 require('dotenv').config();
 
+// -== Web server ==-
+const app = express();
+const keepalive = require('express-glitch-keepalive');
+
+app.use(keepalive);
+
+app.get("/", (_request, response) => {
+  response.json('Ho! - Ho! - Ho!');
+});
+
+app.get("/", (_request, response) => {
+  response.sendStatus(200);
+});
+
+app.listen(443);
+// -== Web server ==-
+
+// -== Bot client ==-
 const client = new Client();
 
 const triggerNames = ['santa', 'санта', 'hoho', 'хохо', 'новый год', 'new year', 'christmas', 'рождество'];
@@ -114,3 +133,4 @@ client.on('channelCreate', channelEvent);
 client.on('channelUpdate', channelEvent);
 
 client.login(process.env.TOKEN);
+// -== Bot client ==-
