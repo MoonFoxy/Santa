@@ -5,6 +5,7 @@ const client = new Client();
 
 const triggerNames = ['santa', 'санта', 'hoho', 'хохо', 'новый год', 'new year', 'christmas', 'рождество'];
 const triggerEmojis = ['🕛', '🦌', '⛄', '☃️', '❄️', '🍾', '🥂', '✨', '🎄', '🎅', '📺', '🎇', '🎆', '🧨', '🛷', '🎁', '🍊', '🎉', '🎊', '⛸', '📦', '💃', '🍽', '🍷', '🍍', '🍓', '🌰', '📅', '🥶', '❶', '❅', '❆', '👯', '★', '☆', '✪', '✫', '✯', '⚝', '⚫', '⚹', '✵', '❉', '❋', '✺', '✹', '✸', '✶', '✷', '✵', '✴', '✴', '✳', '✲', '✱', '✧', '✦', '⍟', '⊛'];
+const roleName = 'CHRISTMAS🎉';
 
 const triggerNamesRegex = new RegExp(triggerNames.map((value, index, array) => {
   return (index !== (array.length - 1)) ? `${value}|` : `${value}`;
@@ -41,35 +42,29 @@ async function messageEvent(message) {
   }
 
   if (trigger(message.content)) {
-    const emoji = triggerEmojis[Math.floor(Math.random() * triggerEmojis.length)];
-    await message.react(emoji).catch(console.error);
+    await message.react('🎅').catch(console.error);
   }
 }
 
 async function guildCreateEvent(guild) {
   if (guild.me.hasPermission('MANAGE_ROLES')) {
-    let role;
-    const foundRoles = guild.roles.cache.filter((value) => trigger(value));
-    if (foundRoles.length === 0) {
-      await guild.roles.create({
+    let role = member.guild.roles.cache.find((value) => value.name === roleName);
+    if (!role) {
+      await member.guild.roles.create({
         data: {
-          name: 'CHRISTMAS🎉',
+          name: roleName,
           color: '#ff6666',
         },
         reason: 'Ho! - Ho! - Ho!',
       })
       .then((value) => role = value)
-      .catch(() => role = undefined);
-    } else {
-      role = foundRoles[0];
+      .catch(console.error);
     }
 
     if (role)
     {
-      for (member of guild.members.cache) {
-        if (trigger(member.nickname)) {
-          await member.roles.add(role).catch(console.error);
-        }
+      if (trigger(member.nickname)) {
+        await member.roles.add(role).catch(console.error);
       }
     }
   }
@@ -77,20 +72,17 @@ async function guildCreateEvent(guild) {
 
 async function guildEvent(member) {
   if (member.guild.me.hasPermission('MANAGE_ROLES')) {
-    let role;
-    const foundRoles = member.guild.roles.cache.filter((value) => trigger(value));
-    if (foundRoles.length === 0) {
+    let role = member.guild.roles.cache.find((value) => value.name === roleName);
+    if (!role) {
       await member.guild.roles.create({
         data: {
-          name: 'CHRISTMAS🎉',
+          name: roleName,
           color: '#ff6666',
         },
         reason: 'Ho! - Ho! - Ho!',
       })
       .then((value) => role = value)
-      .catch(() => role = undefined);
-    } else {
-      role = foundRoles[0];
+      .catch(console.error);
     }
 
     if (role)
