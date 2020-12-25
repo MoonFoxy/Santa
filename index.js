@@ -16,7 +16,7 @@ app.get("/", (_request, response) => {
   response.sendStatus(200);
 });
 
-app.listen(443);
+app.listen(process.env.PORT);
 // -== Web server ==-
 
 // -== Bot client ==-
