@@ -3,6 +3,8 @@ const moment = require('moment');
 const express = require('express');
 require('dotenv').config();
 
+const getTimeToNewYear = () => moment([(new Date().getFullYear() + 1)]).locale('ru').fromNow(true);
+
 // -== Web server ==-
 const app = express();
 const keepalive = require('express-glitch-keepalive');
@@ -10,8 +12,7 @@ const keepalive = require('express-glitch-keepalive');
 app.use(keepalive);
 
 app.get("/", (_request, response) => {
-  response.json('Ho! - Ho! - Ho!');
-  response.sendStatus(200);
+  response.status(200).send(`Хо! - Хо! - Хо! До Нового Года осталось ${getTimeToNewYear()}!`);
 });
 
 app.listen(process.env.PORT);
@@ -57,8 +58,7 @@ async function messageEvent(message) {
   if (message.author.bot) return;
 
   if (message.mentions.has(client.user)) {
-    const time = moment([(new Date().getFullYear() + 1)]).locale('ru').fromNow(true);
-    await message.reply(`Хо! - Хо! - Хо! До нового года осталось \`${time}\`!`);
+    await message.reply(`Хо! - Хо! - Хо! До Нового Года осталось \`${getTimeToNewYear()}\`!`);
   }
 
   if (trigger(message.content)) {
