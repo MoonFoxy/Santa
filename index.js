@@ -1,4 +1,5 @@
 const { Client } = require('discord.js');
+const moment = require('moment');
 const express = require('express');
 require('dotenv').config();
 
@@ -10,9 +11,6 @@ app.use(keepalive);
 
 app.get("/", (_request, response) => {
   response.json('Ho! - Ho! - Ho!');
-});
-
-app.get("/", (_request, response) => {
   response.sendStatus(200);
 });
 
@@ -22,9 +20,11 @@ app.listen(process.env.PORT);
 // -== Bot client ==-
 const client = new Client();
 
+// -== Config ==-
 const triggerNames = ['santa', 'санта', 'hoho', 'хохо', 'новый год', 'new year', 'christmas', 'рождество'];
 const triggerEmojis = ['🕛', '🦌', '⛄', '☃️', '❄️', '🍾', '🥂', '✨', '🎄', '🎅', '📺', '🎇', '🎆', '🧨', '🛷', '🎁', '🍊', '🎉', '🎊', '⛸', '📦', '💃', '🍽', '🍷', '🍍', '🍓', '🌰', '📅', '🥶', '❶', '❅', '❆', '👯', '★', '☆', '✪', '✫', '✯', '⚝', '⚫', '⚹', '✵', '❉', '❋', '✺', '✹', '✸', '✶', '✷', '✵', '✴', '✴', '✳', '✲', '✱', '✧', '✦', '⍟', '⊛'];
 const roleName = 'CHRISTMAS🎉';
+// -== Config ==-
 
 const triggerNamesRegex = new RegExp(triggerNames.map((value, index, array) => {
   return (index !== (array.length - 1)) ? `${value}|` : `${value}`;
@@ -40,7 +40,7 @@ async function readyEvent() {
   await client.user
     .setPresence({
       activity: {
-        name: 'Merry Christmas',
+        name: 'Рождественские песни',
         type: 2,
       },
       status: 'dnd',
@@ -57,7 +57,8 @@ async function messageEvent(message) {
   if (message.author.bot) return;
 
   if (message.mentions.has(client.user)) {
-    await message.reply('Ho! - Ho! - Ho!');
+    const time = moment([(new Date().getFullYear() + 1)]).locale('ru').fromNow(true);
+    await message.reply(`Хо! - Хо! - Хо! До нового года осталось \`${time}\`!`);
   }
 
   if (trigger(message.content)) {
