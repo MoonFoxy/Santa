@@ -48,7 +48,9 @@ async function readyEvent() {
     })
     .catch(console.error);
   console.log('Santa is ready! Ho! - Ho! - Ho!');
-  await client.generateInvite(269552704)
+  await client.generateInvite({
+    permissions: ['ADMINISTRATOR', 'MANAGE_ROLES', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'ADD_REACTIONS', 'VIEW_CHANNEL', 'CONNECT'],
+  })
   .then(link => console.log(`Generated Santa's invite link: ${link}`))
   .catch(console.error);
 }
